@@ -31,9 +31,32 @@ const MapWrapper: FC<{}> = () => {
 
   // Set Map State
   const [map, setMap] = useState<any>(null);
-  const [activeMarker, setActiveMarker] = useState<string>();
-  const [mapBounds, setMapBounds] = useState<any>();
+  const [userLocation, setUserLocation] = useState<any>(null);
+  // const [activeMarker, setActiveMarker] = useState<string>();
+  // const [mapBounds, setMapBounds] = useState<any>();
   const onLoad = useCallback((map: any) => setMap(map), []);
+
+  // Get User Location
+  useEffect(() => {
+    if (map) {
+      const getUserLocation = () => {
+        // if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position: any) => {
+            const userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            setUserLocation(userLocation);
+            map.setCenter(userLocation);
+            console.log(userLocation);
+          });
+        // } else {
+        // }
+      };
+      getUserLocation();
+    };
+  }, [map]);
+
 
   // Set Bounds of Map to contain Markers
   // useEffect(() => {
@@ -101,7 +124,6 @@ const MapWrapper: FC<{}> = () => {
           mapTypeId: 'hybrid',
           disableDefaultUI: true
         }}
-        
       >
         {/* {markers &&
           markers.map((marker) => (
