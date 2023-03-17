@@ -13,6 +13,7 @@ import {
 // import MarkerInfoCard from "../markerInfoCard/MarkerInfoCard";
 // import { Photo } from '../../types/Photo';
 // import { ContainterStyle } from "../../types/ContainerStyle";
+import { Position } from "../../types/Position";
 
 // Need to use require to avoid weird error on googleMapsApiKey property
 const LoadScript = require('@react-google-maps/api').LoadScript;
@@ -42,7 +43,7 @@ const MapWrapper: FC<{}> = () => {
       const getUserLocation = () => {
         // if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position: any) => {
-            const userLocation = {
+            const userLocation: Position = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
@@ -56,7 +57,6 @@ const MapWrapper: FC<{}> = () => {
       getUserLocation();
     };
   }, [map]);
-
 
   // Set Bounds of Map to contain Markers
   // useEffect(() => {
