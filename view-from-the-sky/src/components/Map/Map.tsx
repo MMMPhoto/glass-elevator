@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState, ReactElement } from "react";
+import { FC, useCallback, useEffect, useState, useRef, ReactElement } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { useMediaQuery } from 'react-responsive';
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
@@ -20,6 +20,21 @@ const LoadScript = require('@react-google-maps/api').LoadScript;
 
 const apiKey: any = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
+const locationColor: any = {
+  "google-blue": "#4285F4",
+  "white": "#FFF"
+};
+
+// const blueDot: any = {
+//   fillColor: locationColor['google-blue'],
+//   fillOpacity: 1,
+//   path: google.maps.SymbolPath.CIRCLE,
+//   scale: 8,
+//   strokeColor: locationColor['white'],
+//   strokeWeight: 2
+// }
+
+
 const MapWrapper: FC<{}> = () => {
   // // Query screen size for mobile and tablet
   // const isMobile: boolean = useMediaQuery({ query: '(max-width: 700px)' });
@@ -35,6 +50,7 @@ const MapWrapper: FC<{}> = () => {
   const [userLocation, setUserLocation] = useState<any>(null);
   // const [activeMarker, setActiveMarker] = useState<string>();
   // const [mapBounds, setMapBounds] = useState<any>();
+  const userMarker = useRef<any>(null);
   const onLoad = useCallback((map: any) => setMap(map), []);
 
   // Get User Location
@@ -55,8 +71,24 @@ const MapWrapper: FC<{}> = () => {
         // }
       };
       getUserLocation();
+      // if (userMarker.current) {
+      //   userMarker.current.setMap(null); 
+      // };
+      // userMarker.current = new google.maps.Marker({
+      //   icon: blueDotUrl,
+      //   position: userLocation,
+      //   title: 'You are here'
+      // });
+      // userMarker.current.setMap(map);
     };
   }, [map]);
+
+  // Set User Marker
+  // useEffect(() => {
+  //   if (map) {
+
+  //   };
+  // }, [userMarker]);
 
   // Set Bounds of Map to contain Markers
   // useEffect(() => {
@@ -125,6 +157,21 @@ const MapWrapper: FC<{}> = () => {
           disableDefaultUI: true
         }}
       >
+        {userLocation 
+          ? <Marker
+              position={userLocation}
+              icon={{
+                fillColor: locationColor['google-blue'],
+                fillOpacity: 1,
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8,
+                strokeColor: locationColor['white'],
+                strokeWeight: 2            
+              }}
+            >
+            </Marker>
+          : null
+        }
         {/* {markers &&
           markers.map((marker) => (
             <Marker
