@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState, useRef, ReactElement } from "react";
+import { FC, useCallback, useEffect, useState, useRef, ReactElement, SetStateAction } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { useMediaQuery } from 'react-responsive';
 // import { Wrapper, Status } from "@googlemaps/react-wrapper";
@@ -26,17 +26,7 @@ const locationColor: any = {
   "white": "#FFF"
 };
 
-// const blueDot: any = {
-//   fillColor: locationColor['google-blue'],
-//   fillOpacity: 1,
-//   path: google.maps.SymbolPath.CIRCLE,
-//   scale: 8,
-//   strokeColor: locationColor['white'],
-//   strokeWeight: 2
-// }
-
-
-const MapWrapper: FC<{}> = () => {
+const Map: FC<{userLocation: Position}> = (userLocation) => {
   // // Query screen size for mobile and tablet
   // const isMobile: boolean = useMediaQuery({ query: '(max-width: 700px)' });
   // const isTablet: boolean = useMediaQuery({ query: '(max-width: 1200px)' })
@@ -48,7 +38,6 @@ const MapWrapper: FC<{}> = () => {
 
   // Set Map State
   const [map, setMap] = useState<any>(null);
-  const [userLocation, setUserLocation] = useState<any>(null);
   const [markers, setMarkers] = useState<any>(null);
   // const [activeMarker, setActiveMarker] = useState<string>();
   // const [mapBounds, setMapBounds] = useState<any>();
@@ -58,22 +47,11 @@ const MapWrapper: FC<{}> = () => {
   // Get User Location
   useEffect(() => {
     if (map) {
-      const getUserLocation = () => {
-        // if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position: any) => {
-            const userLocation: Position = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            setUserLocation(userLocation);
-            map.setCenter(userLocation);
-            console.log(userLocation);
-            setMarkers(markerData);
-          });
-        // } else {
-        // }
-      };
-      getUserLocation();
+      map.setCenter(userLocation);
+      console.log(userLocation);
+      setMarkers(markerData);
+    };
+
       // if (userMarker.current) {
       //   userMarker.current.setMap(null); 
       // };
@@ -83,7 +61,6 @@ const MapWrapper: FC<{}> = () => {
       //   title: 'You are here'
       // });
       // userMarker.current.setMap(map);
-    };
   }, [map]);
 
   // Set User Marker
@@ -160,9 +137,9 @@ const MapWrapper: FC<{}> = () => {
           disableDefaultUI: true
         }}
       >
-        {userLocation 
+        {userLocation.userLocation
           ? <Marker
-              position={userLocation}
+              position={userLocation.userLocation}
               icon={{
                 fillColor: locationColor['google-blue'],
                 fillOpacity: 1,
@@ -203,4 +180,4 @@ const MapWrapper: FC<{}> = () => {
   );
 };
 
-export default MapWrapper;
+export default Map;
