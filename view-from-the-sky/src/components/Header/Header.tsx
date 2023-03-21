@@ -11,7 +11,7 @@ const Header = ((props: any) => {
   return (
     <HeaderBar>
         <Title>
-          View From The Sky
+          Glass Elevator
         </Title>          
         {/* {props.loggedIn
           ? <NavBar>

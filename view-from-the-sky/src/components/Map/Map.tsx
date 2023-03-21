@@ -14,6 +14,7 @@ import {
 // import { Photo } from '../../types/Photo';
 // import { ContainterStyle } from "../../types/ContainerStyle";
 import { Position } from "../../types/Position";
+import markerData from "../../data/dummyData";
 
 // Need to use require to avoid weird error on googleMapsApiKey property
 const LoadScript = require('@react-google-maps/api').LoadScript;
@@ -48,6 +49,7 @@ const MapWrapper: FC<{}> = () => {
   // Set Map State
   const [map, setMap] = useState<any>(null);
   const [userLocation, setUserLocation] = useState<any>(null);
+  const [markers, setMarkers] = useState<any>(null);
   // const [activeMarker, setActiveMarker] = useState<string>();
   // const [mapBounds, setMapBounds] = useState<any>();
   const userMarker = useRef<any>(null);
@@ -66,6 +68,7 @@ const MapWrapper: FC<{}> = () => {
             setUserLocation(userLocation);
             map.setCenter(userLocation);
             console.log(userLocation);
+            setMarkers(markerData);
           });
         // } else {
         // }
@@ -172,17 +175,17 @@ const MapWrapper: FC<{}> = () => {
             </Marker>
           : null
         }
-        {/* {markers &&
-          markers.map((marker) => (
+        {markers ?
+          markers.map((marker: any, index: number) => (
             <Marker
-              key={marker.id}
+              key={index}
               position={{ lat: marker.lat, lng: marker.lng }}
-              onMouseOver={() => handleActiveMarker(marker.id)}
+              // onMouseOver={() => handleActiveMarker(marker.id)}
               // onLoad={() => markerDrop(marker)}
-              animation={2}
-              onClick={() => handleActiveMarker(marker.id)}
+              // animation={2}
+              // onClick={() => handleActiveMarker(marker.id)}
             >
-              {activeMarker === marker.id && markers.length > 1
+              {/* {activeMarker === marker.id && markers.length > 1
                 ? <InfoWindow
                     key={marker.id} 
                     position={{lat: marker.lat, lng: marker.lng}}
@@ -190,9 +193,11 @@ const MapWrapper: FC<{}> = () => {
                     <MarkerInfoCard marker={marker} navigate={navigate} />
                   </InfoWindow>
                 : null
-              }
+              } */}
             </Marker>
-          ))} */}
+          ))
+          : null
+        }
       </GoogleMap>
     </LoadScript>
   );
