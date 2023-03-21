@@ -39,6 +39,8 @@ const Map: FC<{userLocation: Position}> = (userLocation) => {
   // Set Map State
   const [map, setMap] = useState<any>(null);
   const [markers, setMarkers] = useState<any>(null);
+  const [center, setCenter] = useState<Position>({ lat: 39.952584, lng: -75.165221 })
+  const [userIcon, setUserIcon] = useState<any>(null);
   // const [activeMarker, setActiveMarker] = useState<string>();
   // const [mapBounds, setMapBounds] = useState<any>();
   const userMarker = useRef<any>(null);
@@ -47,9 +49,18 @@ const Map: FC<{userLocation: Position}> = (userLocation) => {
   // Get User Location
   useEffect(() => {
     if (map) {
-      map.setCenter(userLocation);
-      console.log(userLocation);
+      // 
+      map.setCenter(userLocation.userLocation);
+      console.log(userLocation.userLocation);
       setMarkers(markerData);
+      setUserIcon({
+        fillColor: locationColor['google-blue'],
+        fillOpacity: 1,
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        strokeColor: locationColor['white'],
+        strokeWeight: 2            
+      });
     };
 
       // if (userMarker.current) {
@@ -128,7 +139,7 @@ const Map: FC<{userLocation: Position}> = (userLocation) => {
       <GoogleMap
         zoom={4.5}
         mapContainerStyle={{ width: "100vw", height: "100vh" }}
-        center={{ lat: 30, lng: -90 }}
+        center={center}
         onLoad={onLoad}
         // onBoundsChanged={handleBoundsChange}
         options={{
@@ -137,17 +148,11 @@ const Map: FC<{userLocation: Position}> = (userLocation) => {
           disableDefaultUI: true
         }}
       >
-        {userLocation.userLocation
+        {/* Have to use a nested object here for unknown reason */}
+        {userIcon
           ? <Marker
               position={userLocation.userLocation}
-              icon={{
-                fillColor: locationColor['google-blue'],
-                fillOpacity: 1,
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 8,
-                strokeColor: locationColor['white'],
-                strokeWeight: 2            
-              }}
+              icon={userIcon}
             >
             </Marker>
           : null

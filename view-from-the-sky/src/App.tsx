@@ -6,25 +6,41 @@ import { Position } from "./types/Position";
 
 const App: FC<{}> = () => {
 
+  // Browser Location State Variables
   const [userLocation, setUserLocation] = useState<any>(null);
+  const [locationAccess, setLocationAccess] = useState<boolean>(false);
+
+  const getUserLocation = () => {
+    // if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        const userLocation: Position = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        setUserLocation(userLocation);
+        setLocationAccess(true);
+      });
+    // } else {
+
+    // };
+  };
+
+  // navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
+  //   permissionStatus.onchange = () => {
+  //     setLocationAccess(permissionStatus.state == "granted");
+  //     if (permissionStatus.state=="granted") {
+  //       getUserLocation();
+  //     }
+  //   };
+  // });
 
   useEffect(() => {
-    const getUserLocation = () => {
-      // if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position: any) => {
-          const userLocation: Position = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setUserLocation(userLocation);
-        });
-    };
     getUserLocation();
-  }, [])
+  }, [userLocation])
 
   return (
     <div className="App">
-      <Header />
+      <Header locationAccess={locationAccess} />
       <Map userLocation={userLocation} />
     </div>
   );
