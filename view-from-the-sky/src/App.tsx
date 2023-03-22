@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
+import Search from "./components/Search/Search";
 import Map from "./components/Map/Map";
 import { Position } from "./types/Position";
 
@@ -41,6 +42,7 @@ const App: FC<{}> = () => {
   return (
     <div className="App">
       <Header locationAccess={locationAccess} />
+      <Search />
       <Map userLocation={userLocation} />
     </div>
   );
