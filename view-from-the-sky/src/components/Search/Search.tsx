@@ -5,7 +5,7 @@ import { Button } from "@react-md/button";
 // import { loginUser } from "../../utils/api";
 // import { useNavigate } from "react-router-dom";
 // import { login } from "../../utils/auth";
-import { FormCard, FormContent } from "./styles";
+import { FormCard, FormContent, FormRow } from "./styles";
 import { Container } from "../../styles/styles";
 // import { useSelector, useDispatch } from 'react-redux';
 // import { saveSavedPhotos, selectSavedPhotos } from "../../store/userSavedPhotosSlice";
@@ -62,26 +62,25 @@ const Search: FC<{}> = ({}) => {
   };
 
   return (
-    <section id="background">
       <Container>
         <FormCard>
           <CardHeader>
-            <CardTitle>Welcome Back!</CardTitle>
+            <CardTitle>Search Filter:</CardTitle>
           </CardHeader>
           <FormContent>
-            <Form>
+            <FormRow>
               <TextField
-                id="email"
-                name="email"
-                label="Email"
+                id="search-term-1"
+                name="search-term-1"
+                label="Search Term 1:"
                 // value={userFormData.email}
                 onChange={handleInputChange}
                 type="email"
               />
               <TextField
-                id="password"
-                name="password"
-                label="password"
+                id="search-term-2"
+                name="search-term-2"
+                label="Search Term 2:"
                 // value={userFormData.password}
                 onChange={handleInputChange}
               />
@@ -90,7 +89,7 @@ const Search: FC<{}> = ({}) => {
               > 
                 Login
               </Button>
-            </Form>
+            </FormRow>
             {/* <Card>
               <img
                 src="https://res.cloudinary.com/dwuqez3pg/image/upload/c_scale,w_500/v1665696442/View-from-here/1ddfeb86305588512f79432b4a107ec5.jpg"
@@ -102,7 +101,6 @@ const Search: FC<{}> = ({}) => {
           </FormContent>
         </FormCard>
       </Container>
-    </section>
   )
 };
 
