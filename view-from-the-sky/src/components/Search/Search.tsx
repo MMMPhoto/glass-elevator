@@ -1,4 +1,5 @@
 import React, {  FC, useState, ChangeEvent, FormEvent } from "react";
+import Autocomplete from "react-google-autocomplete";
 import { Card, CardHeader, CardTitle, CardContent, CardActions } from "@react-md/card";
 import { Form, TextField } from "@react-md/form";
 import { Button } from "@react-md/button";
@@ -16,7 +17,7 @@ import { Container } from "../../styles/styles";
 // };
 
 const Search: FC<{}> = ({}) => {
-  const [userFormData, setUserFormData] = useState<any>();
+  const [userFormData, setUserFormData] = useState<any>({ location: "", radius: "" });
   // const navigate = useNavigate();
 
   // // Define React Redux functions
@@ -69,20 +70,27 @@ const Search: FC<{}> = ({}) => {
           </CardHeader>
           <FormContent>
             <FormRow>
-              <TextField
-                id="search-term-1"
-                name="search-term-1"
-                label="Search Term 1:"
-                // value={userFormData.email}
-                onChange={handleInputChange}
-                type="email"
+              <Autocomplete
+                apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+                onPlaceSelected={(place) => {
+                console.log(place);
+                }}
               />
               <TextField
-                id="search-term-2"
-                name="search-term-2"
-                label="Search Term 2:"
-                // value={userFormData.password}
+                id="location"
+                name="location"
+                label="Location:"
+                value={userFormData.location}
                 onChange={handleInputChange}
+                type="text"
+              />
+              <TextField
+                id="radius"
+                name="radius"
+                label="Search Radius:"
+                value={userFormData.radius}
+                onChange={handleInputChange}
+                type="number"
               />
               <Button
                 onClick={handleFormSubmit}

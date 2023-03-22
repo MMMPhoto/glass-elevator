@@ -42,7 +42,7 @@ const App: FC<{}> = () => {
   return (
     <div className="App">
       <Header locationAccess={locationAccess} />
-      <Search />
+      {/* <Search /> */}
       <Map userLocation={userLocation} />
     </div>
   );
