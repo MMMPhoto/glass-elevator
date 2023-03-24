@@ -7,7 +7,7 @@ import {
 } from "./styles";
 
 
-const Header = ((props: any) => {
+const Header = () => {
   return (
     <HeaderBar>
         <Title>
@@ -42,6 +42,6 @@ const Header = ((props: any) => {
           } */}
     </HeaderBar>
   );
-});
+};
 
 export default Header;

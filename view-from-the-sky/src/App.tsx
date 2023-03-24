@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Search from "./components/Search/Search";
@@ -40,11 +41,15 @@ const App: FC<{}> = () => {
   }, [userLocation])
 
   return (
-    <div className="App">
-      <Header locationAccess={locationAccess} />
-      {/* <Search /> */}
-      <Map userLocation={userLocation} />
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Search />} />
+          <Route path="/map" element={<Map userLocation={userLocation} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, {  FC, useState, ChangeEvent, FormEvent } from "react";
 import Autocomplete from "react-google-autocomplete";
-import { Card, CardHeader, CardTitle, CardContent, CardActions } from "@react-md/card";
-import { Form, TextField } from "@react-md/form";
-import { Button } from "@react-md/button";
+// import { Card, CardHeader, CardTitle, CardContent, CardActions } from "@react-md/card";
+// import { Form, TextField } from "@react-md/form";
+// import { Button } from "@react-md/button";
+import { useNavigate } from "react-router-dom";
 // import { loginUser } from "../../utils/api";
 // import { useNavigate } from "react-router-dom";
 // import { login } from "../../utils/auth";
@@ -15,9 +16,11 @@ import { Container } from "../../styles/styles";
 //   email: string,
 //   password: string,
 // };
+const apiKey: string | undefined = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-const Search: FC<{}> = ({}) => {
+const Search: FC<{}> = () => {
   const [userFormData, setUserFormData] = useState<any>({ location: "", radius: "" });
+  const navigate = useNavigate();
   // const navigate = useNavigate();
 
   // // Define React Redux functions
@@ -30,7 +33,7 @@ const Search: FC<{}> = ({}) => {
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
 
   //   // check if form has everything (as per react-bootstrap docs)
   //   const form = e.currentTarget;
@@ -62,21 +65,26 @@ const Search: FC<{}> = ({}) => {
   // };
   };
 
+  const onPlaceSelected = ((place: any) => {
+      console.log(place);
+      console.log("Place selected");
+      navigate("/map");
+  });
+
   return (
       <Container>
-        <FormCard>
-          <CardHeader>
+            <Autocomplete
+                apiKey={apiKey}
+                onPlaceSelected={onPlaceSelected}
+              />
+        {/* <FormCard> */}
+          {/* <CardHeader>
             <CardTitle>Search Filter:</CardTitle>
           </CardHeader>
           <FormContent>
             <FormRow>
-              <Autocomplete
-                apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-                onPlaceSelected={(place) => {
-                console.log(place);
-                }}
-              />
-              <TextField
+           */}
+              {/* <TextField
                 id="location"
                 name="location"
                 label="Location:"
@@ -96,8 +104,8 @@ const Search: FC<{}> = ({}) => {
                 onClick={handleFormSubmit}
               > 
                 Login
-              </Button>
-            </FormRow>
+              </Button> */}
+            {/* </FormRow> */}
             {/* <Card>
               <img
                 src="https://res.cloudinary.com/dwuqez3pg/image/upload/c_scale,w_500/v1665696442/View-from-here/1ddfeb86305588512f79432b4a107ec5.jpg"
@@ -106,8 +114,8 @@ const Search: FC<{}> = ({}) => {
                 id="loginFormImg"
               />
             </Card> */}
-          </FormContent>
-        </FormCard>
+          {/* </FormContent>
+        </FormCard> */}
       </Container>
   )
 };
