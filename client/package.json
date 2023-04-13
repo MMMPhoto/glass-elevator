@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/google.maps": "^3.52.5",
     "@types/react-places-autocomplete": "^7.2.9",
     "@types/styled-components": "^5.1.26"
   }
