@@ -9,8 +9,8 @@ import { Position } from "./types/Position";
 const App: FC<{}> = () => {
 
   // Browser Location State Variables
-  const [userLocation, setUserLocation] = useState<any>(null);
-  const [locationAccess, setLocationAccess] = useState<boolean>(false);
+  const [userLocation, setUserLocation] = useState<Position>({ lat: 0, lng: 0 });
+  const [searchPlace, setSearchPlace] = useState<Position>({ lat: 0, lng: 0 });
 
   const getUserLocation = () => {
     // if (navigator.geolocation) {
@@ -20,7 +20,6 @@ const App: FC<{}> = () => {
           lng: position.coords.longitude
         };
         setUserLocation(userLocation);
-        setLocationAccess(true);
       });
     // } else {
 
@@ -45,8 +44,8 @@ const App: FC<{}> = () => {
       <div className="App">
         <Header />
         <Routes>
-          <Route path="/" element={<Search />} />
-          <Route path="/map" element={<Map userLocation={userLocation} />} />
+          <Route path="/" element={<Search setSearchPlace={setSearchPlace} />} />
+          <Route path="/map" element={<Map userLocation={userLocation} searchPlace={searchPlace} />} />
         </Routes>
       </div>
     </Router>

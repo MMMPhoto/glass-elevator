@@ -30,7 +30,7 @@ const locationColor: any = {
   "white": "#FFF"
 };
 
-const Map: FC<{userLocation: Position}> = (userLocation) => {
+const Map: FC<{userLocation: Position, searchPlace: Position}> = (userLocation, searchPlace) => {
   // // Query screen size for mobile and tablet
   // const isMobile: boolean = useMediaQuery({ query: '(max-width: 700px)' });
   // const isTablet: boolean = useMediaQuery({ query: '(max-width: 1200px)' })
@@ -82,8 +82,11 @@ const Map: FC<{userLocation: Position}> = (userLocation) => {
   // Get User Location
   useEffect(() => {
     if (map) {
-      map.setCenter(userLocation.userLocation);
-      console.log(userLocation.userLocation);
+      if (searchPlace) {
+        map.setCenter(searchPlace.searchPlace);
+      } else {
+        map.setCenter(userLocation.userLocation);
+      }
       setMarkers(markerData);
       setUserIcon({
         fillColor: locationColor['google-blue'],
@@ -93,6 +96,9 @@ const Map: FC<{userLocation: Position}> = (userLocation) => {
         strokeColor: locationColor['white'],
         strokeWeight: 2            
       });
+      // const location = searchPlace.getLatLng();
+      // console.log(location);
+      console.log(`place is ${JSON.stringify(searchPlace)}`);
     };
 
       // if (userMarker.current) {

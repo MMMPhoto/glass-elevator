@@ -1,7 +1,12 @@
 import React, {  FC, useState, ChangeEvent, FormEvent } from "react";
 import Autocomplete from "react-google-autocomplete";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete';
 // import { Card, CardHeader, CardTitle, CardContent, CardActions } from "@react-md/card";
-// import { Form, TextField } from "@react-md/form";
+import { Form, TextField } from "@react-md/form";
 // import { Button } from "@react-md/button";
 import { useNavigate } from "react-router-dom";
 // import { loginUser } from "../../utils/api";
@@ -18,7 +23,7 @@ import { Container } from "../../styles/styles";
 // };
 const apiKey: string | undefined = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-const Search: FC<{}> = () => {
+const Search: FC<{setSearchPlace: Function}> = (setSearchPlace) => {
   const [userFormData, setUserFormData] = useState<any>({ location: "", radius: "" });
   const navigate = useNavigate();
   // const navigate = useNavigate();
@@ -66,16 +71,37 @@ const Search: FC<{}> = () => {
   };
 
   const onPlaceSelected = ((place: any) => {
-      console.log(place);
-      console.log("Place selected");
-      navigate("/map");
+      setTimeout(() => {
+        const location = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+        setSearchPlace.setSearchPlace(location);
+      }, 1000);
+      // Need Timeout to wait for state to update before component reload
+      setTimeout(() => {
+        navigate("/map");
+      }, 3000);
   });
 
   return (
       <Container>
+          {/* <PlacesAutocomplete
+            value={this.state.address}
+            onChange={this.handleChange}
+            onSelect={this.handleSelect}
+          >
+                    <TextField
+                id="location"
+                name="location"
+                label="Location:"
+                value={userFormData.location}
+                onChange={handleInputChange}
+                type="text"
+              />
+
+          </PlacesAutocomplete> */}
             <Autocomplete
                 apiKey={apiKey}
                 onPlaceSelected={onPlaceSelected}
+                // options={{ fields: ["geometry"]}}
               />
         {/* <FormCard> */}
           {/* <CardHeader>
@@ -84,7 +110,7 @@ const Search: FC<{}> = () => {
           <FormContent>
             <FormRow>
            */}
-              {/* <TextField
+              <TextField
                 id="location"
                 name="location"
                 label="Location:"
@@ -92,7 +118,7 @@ const Search: FC<{}> = () => {
                 onChange={handleInputChange}
                 type="text"
               />
-              <TextField
+              {/* // <TextField
                 id="radius"
                 name="radius"
                 label="Search Radius:"
