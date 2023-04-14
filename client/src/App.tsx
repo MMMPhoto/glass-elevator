@@ -6,6 +6,7 @@ import Header from "./components/Header/Header";
 import Search from "./components/Search/Search";
 import Map from "./components/Map/Map";
 import MapsWrapper from "./components/MapsWrapper/Wrapper";
+import SearchTest from "./components/Search/SearchTest";
 import MapTest from "./components/Map/MapTest";
 import Marker from "./components/Map/Marker";
 import markerData from "./data/dummyData";
@@ -59,7 +60,8 @@ const App = () => {
     // <Router>
       <div className="App">
         <Header />
-        <Wrapper apiKey={apiKey} render={render}>
+        <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
+          <SearchTest />
           <MapTest
             center={userLocation} 
             zoom={4}
@@ -69,6 +71,7 @@ const App = () => {
                 <Marker
                   key={index}
                   position={{ lat: marker.lat, lng: marker.lng }}
+                  markerData={marker}
                 />
                 ))
               : null
