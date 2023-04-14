@@ -22,7 +22,7 @@ const App = () => {
   const [searchPlace, setSearchPlace] = useState<Position>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<Position>({ lat: 30, lng: -90 });
-  const [activeMarker, setActiveMarker] = useState<string>("");
+  const [activeMarker, setActiveMarker] = useState<any>();
 
   const render = (status: Status): ReactElement => {
     if (status === Status.LOADING) return <h3>{status} ..</h3>;
@@ -57,6 +57,10 @@ const App = () => {
     getUserLocation();
   }, [])
 
+  useEffect(() => {
+    console.log(activeMarker);
+  }, [activeMarker])
+
   return (
     // <Router>
       <div className="App">
@@ -76,15 +80,16 @@ const App = () => {
                   position={{ lat: marker.lat, lng: marker.lng }}
                   markerData={marker}
                   setActiveMarker={setActiveMarker}
-                >
-                  {activeMarker == marker.public_id
-                    ? <InfoWindow marker={marker} markerClicked={false} />
-                    : <></>
-                  }
-                </Marker>
+                />
                 ))
               : null
               }
+            {activeMarker
+              ? <InfoWindow 
+                marker={activeMarker}
+                />
+              : <></>
+            }
           </MapTest>
         </Wrapper>
         {/* <Routes>

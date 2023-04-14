@@ -11,7 +11,7 @@ interface MapInterface {
 };
 
 const MapTest = ({ children, center, zoom }: {
-    children: JSX.Element
+    children: JSX.Element | JSX.Element[]
     center: LatLng, zoom: number
   }) => {
   const ref = useRef(null);
