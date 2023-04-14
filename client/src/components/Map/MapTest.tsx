@@ -10,9 +10,7 @@ interface MapInterface {
   zoom: number
 };
 
-const MapTest = ({ 
-    children, 
-    center, zoom }: {
+const MapTest = ({ children, center, zoom }: {
       children: JSX.Element
       center: LatLng, zoom: number}) => {
   const ref = useRef(null);
@@ -21,8 +19,12 @@ const MapTest = ({
   useEffect(() => {
     setMap(new google.maps.Map(ref.current!, { 
       center: center, 
-      zoom: zoom })) 
+      zoom: zoom }))
   }, []);
+
+  useEffect(() => {
+    map?.setCenter(center);
+  }, [center]);
 
   return (
     <div 

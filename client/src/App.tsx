@@ -17,12 +17,12 @@ const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
 const markers: any | null = markerData;
 
 const App = () => {
-
   // Browser Location State Variables
   const [userLocation, setUserLocation] = useState<Position>({ lat: 30, lng: -90 });
   const [searchPlace, setSearchPlace] = useState<Position>({ lat: 0, lng: 0 });
 
-  console.log(userLocation);
+  const [mapCenter, setMapCenter] = useState<Position>({ lat: 30, lng: -90 });
+
   const render = (status: Status): ReactElement => {
     if (status === Status.LOADING) return <h3>{status} ..</h3>;
     if (status === Status.FAILURE) return <h3>{status} ...</h3>;
@@ -61,9 +61,11 @@ const App = () => {
       <div className="App">
         <Header />
         <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
-          <SearchTest />
+          <SearchTest 
+            setMapCenter={setMapCenter}
+          />
           <MapTest
-            center={userLocation} 
+            center={mapCenter} 
             zoom={4}
           >
             {markers
