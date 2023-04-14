@@ -7,12 +7,15 @@ import Search from "./components/Search/Search";
 import Map from "./components/Map/Map";
 import MapsWrapper from "./components/MapsWrapper/Wrapper";
 import MapTest from "./components/Map/MapTest";
+import Marker from "./components/Map/Marker";
+import markerData from "./data/dummyData";
 
 import { Position } from "./types/Position";
 
 const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
+const markers: any | null = markerData;
 
-const App: FC<{}> = () => {
+const App = () => {
 
   // Browser Location State Variables
   const [userLocation, setUserLocation] = useState<Position>({ lat: 30, lng: -90 });
@@ -25,19 +28,19 @@ const App: FC<{}> = () => {
     return <></>;
   };
 
-  // const getUserLocation = () => {
-  //   // if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition((position: any) => {
-  //       const userLocation: Position = {
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude
-  //       };
-  //       setUserLocation(userLocation);
-  //     });
-  //   // } else {
+  const getUserLocation = () => {
+    // if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        const userLocation: Position = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        setUserLocation(userLocation);
+      });
+    // } else {
 
-  //   // };
-  // };
+    // };
+  };
 
   // navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
   //   permissionStatus.onchange = () => {
@@ -48,16 +51,29 @@ const App: FC<{}> = () => {
   //   };
   // });
 
-  // useEffect(() => {
-  //   getUserLocation();
-  // }, [userLocation])
+  useEffect(() => {
+    getUserLocation();
+  }, [])
 
   return (
     // <Router>
       <div className="App">
         <Header />
         <Wrapper apiKey={apiKey} render={render}>
-          <MapTest center={userLocation} zoom={4} />
+          <MapTest
+            center={userLocation} 
+            zoom={4}
+          >
+            {markers
+              ? markers.map((marker: any, index: number) => (
+                <Marker
+                  key={index}
+                  position={{ lat: marker.lat, lng: marker.lng }}
+                />
+                ))
+              : null
+              }
+          </MapTest>
         </Wrapper>
         {/* <Routes>
           <Route path="/" element={<Search setSearchPlace={setSearchPlace} />} />

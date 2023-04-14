@@ -1,19 +1,47 @@
-import { FC, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Fragment} from "react";
+import { JsxElement, isNoSubstitutionTemplateLiteral } from "typescript";
 
-function MapTest({center, zoom}: {center: google.maps.LatLngLiteral, zoom: number}) {
+type LatLng = google.maps.LatLngLiteral;
+type GoogleMap = google.maps.Map;
+type MapTypeId = google.maps.MapTypeId;
+
+interface MapInterface {
+  // mapType: MapTypeId,
+  // mapTypeControl?: boolean | undefined,
+  children: JSX.Element,
+  center: LatLng,
+  zoom: number
+};
+
+const MapTest = ({ 
+    children, 
+    center, zoom }: {
+      children?: JSX.Element | JSX.Element[]
+      center: LatLng, zoom: number}) => {
   const ref = useRef(null);
   const [map, setMap] = useState<google.maps.Map>();
 
-
   useEffect(() => {
-    console.log(center);
-    console.log(zoom);
-    new window.google.maps.Map(ref.current!, { center, zoom })
+    setMap(new google.maps.Map(ref.current!, { 
+      center: center, 
+      zoom: zoom })) 
   }, []);
 
   return (
-    <div ref={ref} style={{ height: "100vh" }} id="map" />
-    // <div><h3>Map!</h3></div>
+    <div 
+      ref={ref} 
+      style={{ height: "100vh" }} 
+      id="map"
+    >
+      { map
+        ? Children.map(children, (child) => {
+          if (isValidElement<{map: typeof map}>(child)) {
+            return cloneElement(child, { map: map } )};
+          })
+        : null
+      }
+
+    </div>
   );
 };
 
