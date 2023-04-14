@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Fragment} from "react";
+import { useState, useRef, useEffect, Children, isValidElement, cloneElement } from "react";
 import { JsxElement, isNoSubstitutionTemplateLiteral } from "typescript";
 
 type LatLng = google.maps.LatLngLiteral;

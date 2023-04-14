@@ -1,11 +1,11 @@
-import { GoogleMap } from "@react-google-maps/api";
-import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Fragment} from "react";
+import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
 
-const Marker = ({ children, markerData, map, position }: {
+const Marker = ({ children, markerData, map, position, setActiveMarker }: {
     children: JSX.Element, 
     markerData: any, 
     map?: google.maps.Map, 
-    position: google.maps.LatLngLiteral
+    position: google.maps.LatLngLiteral,
+    setActiveMarker: Dispatch<SetStateAction<string>>
   }) => {
   const [marker, setMarker] = useState<any>();
 
@@ -19,6 +19,9 @@ const Marker = ({ children, markerData, map, position }: {
   useEffect(() => {
     if (marker) {
       marker.setMap(map)
+      marker.addListener("click", () => {
+        setActiveMarker(markerData.public_id);
+      })
     }
   }, [marker]);
 

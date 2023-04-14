@@ -22,6 +22,7 @@ const App = () => {
   const [searchPlace, setSearchPlace] = useState<Position>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<Position>({ lat: 30, lng: -90 });
+  const [activeMarker, setActiveMarker] = useState<string>("");
 
   const render = (status: Status): ReactElement => {
     if (status === Status.LOADING) return <h3>{status} ..</h3>;
@@ -74,8 +75,12 @@ const App = () => {
                   key={index}
                   position={{ lat: marker.lat, lng: marker.lng }}
                   markerData={marker}
+                  setActiveMarker={setActiveMarker}
                 >
-                  <InfoWindow marker={marker} markerClicked={false} />
+                  {activeMarker == marker.public_id
+                    ? <InfoWindow marker={marker} markerClicked={false} />
+                    : <></>
+                  }
                 </Marker>
                 ))
               : null
