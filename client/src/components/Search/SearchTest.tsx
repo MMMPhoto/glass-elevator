@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { TextField } from "react-md";
 
 import { Position } from "../../types/Position";
+import "./Search.css";
 
   const Search = ({ setMapCenter }: {setMapCenter: Dispatch<SetStateAction<Position>>}) => {
   const [searchBox, setSearchBox] = useState<any>();
@@ -37,6 +38,7 @@ import { Position } from "../../types/Position";
     <TextField
       ref={ref}
       id="search"
+      style={{width: "100%"}}
       // onChange={value => getPlace(value)}
     />
   );

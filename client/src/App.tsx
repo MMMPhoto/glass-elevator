@@ -9,6 +9,7 @@ import MapsWrapper from "./components/MapsWrapper/Wrapper";
 import SearchTest from "./components/Search/SearchTest";
 import MapTest from "./components/Map/MapTest";
 import Marker from "./components/Map/Marker";
+import InfoWindow from "./components/Map/InfoWindow";
 import markerData from "./data/dummyData";
 
 import { Position } from "./types/Position";
@@ -17,7 +18,6 @@ const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
 const markers: any | null = markerData;
 
 const App = () => {
-  // Browser Location State Variables
   const [userLocation, setUserLocation] = useState<Position>({ lat: 30, lng: -90 });
   const [searchPlace, setSearchPlace] = useState<Position>({ lat: 0, lng: 0 });
 
@@ -74,7 +74,9 @@ const App = () => {
                   key={index}
                   position={{ lat: marker.lat, lng: marker.lng }}
                   markerData={marker}
-                />
+                >
+                  <InfoWindow marker={marker} markerClicked={false} />
+                </Marker>
                 ))
               : null
               }

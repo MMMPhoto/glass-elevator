@@ -11,8 +11,9 @@ interface MapInterface {
 };
 
 const MapTest = ({ children, center, zoom }: {
-      children: JSX.Element
-      center: LatLng, zoom: number}) => {
+    children: JSX.Element
+    center: LatLng, zoom: number
+  }) => {
   const ref = useRef(null);
   const [map, setMap] = useState<GoogleMap>();
 
