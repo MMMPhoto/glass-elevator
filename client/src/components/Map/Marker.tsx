@@ -2,8 +2,6 @@ import { useState, useRef, useEffect } from "react";
 
 const Marker = ({ markerData, map, position }: {markerData: any, map?: google.maps.Map, position: google.maps.LatLngLiteral}) => {
   const [marker, setMarker] = useState<any>();
-  const ref = useRef(null);
-  console.log(markerData)
 
   useEffect(() => {
     setMarker(new google.maps.Marker({
@@ -20,7 +18,6 @@ const Marker = ({ markerData, map, position }: {markerData: any, map?: google.ma
 
   return (
     <div 
-      ref={ref}
       id={markerData.public_id} // TODO: Change to ID from database once the data is actually fetched
     />
   );
