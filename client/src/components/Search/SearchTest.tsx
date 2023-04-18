@@ -1,12 +1,20 @@
 import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
-import { TextField } from "react-md";
+import { TextField, Button, Form } from "react-md";
 
 import { Position } from "../../types/Position";
 import "./Search.css";
 
-  const Search = ({ setMapCenter }: {setMapCenter: Dispatch<SetStateAction<Position>>}) => {
+type LatLng = google.maps.LatLngLiteral;
+type GoogleMap = google.maps.Map;
+
+  const Search = ({ map, setMapCenter, setMapZoom }: {
+    map: GoogleMap
+    setMapCenter: Dispatch<SetStateAction<Position>>
+    setMapZoom: Dispatch<SetStateAction<number>>
+  }) => {
   const [searchBox, setSearchBox] = useState<any>();
   const [chosenPlace, setChosenPlace] = useState<any>("");
+  const [searchRadius, setSearchRadius] = useState<number>();
   const ref = useRef(null);
 
   const options = {
@@ -21,21 +29,36 @@ import "./Search.css";
     if (searchBox) {
       searchBox.addListener("place_changed", () => {
         const place = searchBox.getPlace();
-        const location = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
-        console.log(location);
         setChosenPlace(place);
-        setMapCenter(location);
       });
-    }
+    };
   }, [searchBox]);
 
-  // const getPlace = (value: any) => {
-  //   const place = searchBox.getPlace(value);
-  //   console.log(place);
-  // };
+  const handleRadiusChange = ((e: React.ChangeEvent<HTMLInputElement>) => {
+    const radius = parseFloat(e.currentTarget.value)
+    if (!Number.isNaN(radius)) {
+      setSearchRadius(radius);
+    };
+  });
+
+  const submitSearch = (() => {
+    console.log("clicked!");
+    const location = { lat: chosenPlace.geometry.location.lat(), lng: chosenPlace.geometry.location.lng() };
+    const meterRadius = searchRadius! * 1609.344; // convert miles to meters
+    const radius = new google.maps.Circle({
+      strokeOpacity: 0,
+      fillOpacity: 0.1,
+      center: location,
+      radius: meterRadius,
+      map: map
+    });
+    const bounds = radius.getBounds()!
+    setMapCenter(location);
+    map.fitBounds(bounds);
+  });
 
   return (
-    <div
+    <Form
       style={{
         display: "flex",
         flexDirection: "row",
@@ -46,13 +69,23 @@ import "./Search.css";
       ref={ref}
       id="search"
       placeholder="Location"
+      required
       // onChange={value => getPlace(value)}
       />
       <TextField
         id="radius"
         placeholder="Radius"
+        required
+        type="number"
+        onChange={(e) => handleRadiusChange(e)}
       />
-    </div>
+      <Button
+        id="submit-search"
+        onClick={() => submitSearch()}
+      >
+        Search
+      </Button>
+    </Form>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Children, isValidElement, cloneElement } from "react";
+import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
 import { JsxElement, isNoSubstitutionTemplateLiteral } from "typescript";
 
 type LatLng = google.maps.LatLngLiteral;
@@ -10,12 +10,16 @@ interface MapInterface {
   zoom: number
 };
 
-const MapTest = ({ children, center, zoom }: {
+const MapTest = ({ children, map, setMap, center, zoom }: {
     children: JSX.Element | JSX.Element[]
-    center: LatLng, zoom: number
+    map: GoogleMap,
+    setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
+    center: LatLng, 
+    zoom: number
   }) => {
+  
   const ref = useRef(null);
-  const [map, setMap] = useState<GoogleMap>();
+  // const [map, setMap] = useState<GoogleMap>();
 
   useEffect(() => {
     setMap(new google.maps.Map(ref.current!, { 

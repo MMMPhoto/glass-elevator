@@ -14,14 +14,20 @@ import markerData from "./data/dummyData";
 
 import { Position } from "./types/Position";
 
+type LatLng = google.maps.LatLngLiteral;
+type GoogleMap = google.maps.Map;
+
 const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
 const markers: any | null = markerData;
 
 const App = () => {
+  const [map, setMap] = useState<GoogleMap>();
+
   const [userLocation, setUserLocation] = useState<Position>({ lat: 30, lng: -90 });
   const [searchPlace, setSearchPlace] = useState<Position>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<Position>({ lat: 30, lng: -90 });
+  const [mapZoom, setMapZoom] = useState<number>(4);
   const [activeMarker, setActiveMarker] = useState<any>();
 
   const render = (status: Status): ReactElement => {
@@ -68,8 +74,12 @@ const App = () => {
         <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
           <SearchTest 
             setMapCenter={setMapCenter}
+            setMapZoom={setMapZoom}
+            map={map!}
           />
           <MapTest
+            map={map!}
+            setMap={setMap}
             center={mapCenter} 
             zoom={4}
           >
