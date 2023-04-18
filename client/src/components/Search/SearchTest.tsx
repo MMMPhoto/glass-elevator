@@ -35,12 +35,24 @@ import "./Search.css";
   // };
 
   return (
-    <TextField
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center"
+      }}
+    >
+      <TextField
       ref={ref}
       id="search"
-      style={{width: "100%"}}
+      placeholder="Location"
       // onChange={value => getPlace(value)}
-    />
+      />
+      <TextField
+        id="radius"
+        placeholder="Radius"
+      />
+    </div>
   );
 };
 
