@@ -23,16 +23,6 @@ const InfoWindow = ({ marker, map}: {marker: any, map?: google.maps.Map}) => {
     }
   }, [infoWindow, marker]);
 
-  // useEffect(() => {
-  //   if (marker) {
-  //     infoWindow.setContent(marker.public_id);
-  //     infoWindow.open({
-  //       anchor: {lat: marker.lat, lng: marker.lng },
-  //       map
-  //     });
-  //   };
-  // }, [marker]);
-
   return (
     <div 
       id={marker.public_id} // TODO: Change to ID from database once the data is actually fetched
