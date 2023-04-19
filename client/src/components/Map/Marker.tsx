@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
 
-const Marker = ({ markerData, map, position, setActiveMarker }: {
-    // children: JSX.Element, 
+const Marker = ({ map, markerData, position, setActiveMarker }: {
+    map: google.maps.Map, 
     markerData: any, 
-    map?: google.maps.Map, 
     position: google.maps.LatLngLiteral,
     setActiveMarker: Dispatch<SetStateAction<string>>
   }) => {

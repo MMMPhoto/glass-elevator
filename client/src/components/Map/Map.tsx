@@ -19,7 +19,6 @@ const MapTest = ({ children, map, setMap, center, zoom }: {
   }) => {
   
   const ref = useRef(null);
-  // const [map, setMap] = useState<GoogleMap>();
 
   useEffect(() => {
     setMap(new google.maps.Map(ref.current!, { 
