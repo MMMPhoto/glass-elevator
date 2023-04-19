@@ -3,11 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import "./App.css";
 import Header from "./components/Header/Header";
-import Search from "./components/Search/Search";
 import Map from "./components/Map/Map";
-import MapsWrapper from "./components/MapsWrapper/Wrapper";
-import SearchTest from "./components/Search/SearchTest";
-import MapTest from "./components/Map/MapTest";
+import Search from "./components/Search/Search";
 import Marker from "./components/Map/Marker";
 import InfoWindow from "./components/Map/InfoWindow";
 import markerData from "./data/dummyData";
@@ -72,12 +69,12 @@ const App = () => {
       <div className="App">
         <Header />
         <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
-          <SearchTest 
+          <Search 
             setMapCenter={setMapCenter}
             setMapZoom={setMapZoom}
             map={map!}
           />
-          <MapTest
+          <Map
             map={map!}
             setMap={setMap}
             center={mapCenter} 
@@ -100,7 +97,7 @@ const App = () => {
                 />
               : <></>
             }
-          </MapTest>
+          </Map>
         </Wrapper>
         {/* <Routes>
           <Route path="/" element={<Search setSearchPlace={setSearchPlace} />} />
