@@ -1,12 +1,12 @@
-import { FC, ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import Splash from "../Splash/Splash";
+import Nearby from "../Nearby/Nearby";
 import Map from "../Map/Map";
 import Search from "../Search/Search";
 import Marker from "../Map/Marker";
 import InfoWindow from "../Map/InfoWindow";
 import markerData from "../../data/dummyData";
-
-import { Position } from "../../types/Position";
 
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
@@ -18,7 +18,7 @@ const MapsWrapper = () => {
   const [map, setMap] = useState<GoogleMap>();
 
   const [locationPermissionStatus, setLocationPermissionStatus] = useState<string>("prompt");
-  const [userLocation, setUserLocation] = useState<LatLng>({ lat: 30, lng: -90 });
+  const [userLocation, setUserLocation] = useState<LatLng>({ lat: 33.84635277777778, lng: -84.31400277777777 });
   const [searchPlace, setSearchPlace] = useState<LatLng>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 30, lng: -90 });
@@ -60,7 +60,13 @@ const MapsWrapper = () => {
   return (
     <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
       {{ // Switch statment based on browser's location permission status
-        "prompt": <p>Please approve your location! It works better :)</p>,
+        "prompt": 
+          <Splash />,
+        "granted": 
+          <Nearby 
+            userLocation={userLocation}
+            markers={markers}
+          />,
         "denied": <div>
                     <p>We can't find your location. Search by a location:</p>
                     <Search 
@@ -93,8 +99,7 @@ const MapsWrapper = () => {
                         : <></>
                       }
                     </Map>
-                  </div>,
-          "granted": <p>Getting your location...</p>
+                  </div>
       }[locationPermissionStatus]
       }
     </Wrapper>
