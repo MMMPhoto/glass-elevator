@@ -39,11 +39,7 @@ const MapsWrapper = () => {
           lng: position.coords.longitude
         };
         setUserLocation(userLocation);
-        // console.log(locationStatus);
       });
-    } else {
-      // console.log(locationStatus);
-      handlePermission();
     };
   };
 
@@ -52,21 +48,13 @@ const MapsWrapper = () => {
       setLocationPermissionStatus(permissionStatus.state);
       permissionStatus.onchange = () => {
         setLocationPermissionStatus(permissionStatus.state);
-      }
+        getUserLocation();
+      };
     });
-    //   if (permissionStatus.state == "propmt") {
-    //     handlePermission();
-    //   } else if {
-    //     ()
-    //   }
-    //   setLocationStatus(permissionStatus.state)
-    //   handlePermission();
-    // });
   };
 
   useEffect(() => {
     handlePermission();
-    getUserLocation();
   }, []);
 
   return (
