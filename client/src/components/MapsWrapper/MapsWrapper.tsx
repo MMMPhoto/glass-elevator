@@ -18,7 +18,7 @@ const MapsWrapper = () => {
   const [map, setMap] = useState<GoogleMap>();
 
   const [locationPermissionStatus, setLocationPermissionStatus] = useState<string>("prompt");
-  const [userLocation, setUserLocation] = useState<LatLng>({ lat: 30, lng: -90 });
+  const [userLocation, setUserLocation] = useState<LatLng | undefined>();
   const [searchPlace, setSearchPlace] = useState<LatLng>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 30, lng: -90 });
@@ -38,19 +38,23 @@ const MapsWrapper = () => {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
+        console.log(userLocation)
         setUserLocation(userLocation);
       });
     };
   };
 
   const handlePermission = () => {
-    navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
-      setLocationPermissionStatus(permissionStatus.state);
-      permissionStatus.onchange = () => {
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
         setLocationPermissionStatus(permissionStatus.state);
-        getUserLocation();
-      };
-    });
+        console.log(permissionStatus.state);
+        permissionStatus.onchange = () => {
+          setLocationPermissionStatus(permissionStatus.state);
+          getUserLocation();
+        };
+      });
+    };
   };
 
   useEffect(() => {
@@ -69,6 +73,7 @@ const MapsWrapper = () => {
             setMap={setMap}
             userLocation={userLocation}
             markers={markers}
+            activeMarker={setActiveMarker}
             setActiveMarker={setActiveMarker}
           />,
         "denied": <div>

@@ -7,16 +7,17 @@ import InfoWindow from "../Map/InfoWindow";
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
 
-const Nearby = ({map, setMap, userLocation, markers, setActiveMarker} : {
+const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMarker} : {
   map: GoogleMap,
   setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
-  userLocation: LatLng,
+  userLocation: LatLng | undefined,
   markers: any,
+  activeMarker: any,
   setActiveMarker: Dispatch<SetStateAction<string>>
 }) => {
    
   const [closestMatch, setClosestMatch] = useState<any>(null);
-  const [checkedMatches, setCheckedMatches] = useState<boolean>(false);
+  const [notCheckedMatches, setNotCheckedMatches] = useState<boolean>(true);
   
   useEffect(() => {
     if (userLocation && markers) {
@@ -30,44 +31,47 @@ const Nearby = ({map, setMap, userLocation, markers, setActiveMarker} : {
           setClosestMatch(marker);
         };
       });
+      setNotCheckedMatches(false);
     };
   }, [userLocation, markers]);
 
   return(
     <div>
-        { closestMatch && checkedMatches
-          ? <div>
-              <img src={`https://res.cloudinary.com/dwuqez3pg/image/upload/c_scale,w_2000/v1665696442/${closestMatch.public_id}.jpg`}/>
-            </div>
-          : <div>
-              <p>Your location: {userLocation.lat} {userLocation.lng}</p>
-              <p>You don't appear to be at one of our Views. Here are the views nearest to you:</p>
-              <Map
-                map={map}
-                setMap={setMap}
-                center={userLocation} 
-                zoom={8}
-              >
-                      {markers
-                        ? markers.map((marker: any, index: number) => (
-                          <Marker
-                            key={index}
-                            map={map!}
-                            markerData={marker}
-                            position={{ lat: marker.lat, lng: marker.lng }}
-                            setActiveMarker={setActiveMarker}
-                          />
-                          ))
-                        : null
-                        }
-                      {/* {activeMarker
-                        ? <InfoWindow 
-                          marker={activeMarker}
-                          />
-                        : <></>
-                      } */}
-                    </Map>
-            </div> 
+        { !userLocation
+          ? <p>Checking for nearby Views...</p>
+          : closestMatch
+            ? <div>
+                <img src={`https://res.cloudinary.com/dwuqez3pg/image/upload/c_scale,w_2000/v1665696442/${closestMatch.public_id}.jpg`}/>
+              </div>
+            : <div>
+                <p>Your location: {userLocation!.lat} {userLocation!.lng}</p>
+                <p>You don't appear to be at one of our Views. Here are the views nearest to you:</p>
+                <Map
+                  map={map}
+                  setMap={setMap}
+                  center={userLocation!} 
+                  zoom={8}
+                >
+                  {markers
+                    ? markers.map((marker: any, index: number) => (
+                      <Marker
+                        key={index}
+                        map={map!}
+                        markerData={marker}
+                        position={{ lat: marker.lat, lng: marker.lng }}
+                        setActiveMarker={setActiveMarker}
+                      />
+                      ))
+                    : null
+                    }
+                  {activeMarker
+                    ? <InfoWindow 
+                      marker={activeMarker}
+                      />
+                    : <></>
+                  }
+                </Map>
+              </div>
         }
     </div>
   )
