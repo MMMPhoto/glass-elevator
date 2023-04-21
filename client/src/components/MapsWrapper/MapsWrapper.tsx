@@ -18,7 +18,7 @@ const MapsWrapper = () => {
   const [map, setMap] = useState<GoogleMap>();
 
   const [locationPermissionStatus, setLocationPermissionStatus] = useState<string>("prompt");
-  const [userLocation, setUserLocation] = useState<LatLng>({ lat: 33.84635277777778, lng: -84.31400277777777 });
+  const [userLocation, setUserLocation] = useState<LatLng>({ lat: 30, lng: -90 });
   const [searchPlace, setSearchPlace] = useState<LatLng>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 30, lng: -90 });
@@ -55,6 +55,7 @@ const MapsWrapper = () => {
 
   useEffect(() => {
     handlePermission();
+    getUserLocation();
   }, []);
 
   return (
@@ -64,8 +65,11 @@ const MapsWrapper = () => {
           <Splash />,
         "granted": 
           <Nearby 
+            map={map!}
+            setMap={setMap}
             userLocation={userLocation}
             markers={markers}
+            setActiveMarker={setActiveMarker}
           />,
         "denied": <div>
                     <p>We can't find your location. Search by a location:</p>
