@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Splash from "../Splash/Splash";
 import Nearby from "../Nearby/Nearby";
+import LocationSwitch from "../LocationSwitch/LocationSwitch";
 import Map from "../Map/Map";
 import Search from "../Search/Search";
 import Marker from "../Map/Marker";
@@ -78,39 +79,41 @@ const MapsWrapper = () => {
           />,
         "denied": <div>
                     <p>We can't find your location. Search by a location:</p>
-                    <Search 
-                        setMapCenter={setMapCenter}
-                        setMapZoom={setMapZoom}
-                        map={map!}
-                      />
-                    <Map
-                      map={map!}
-                      setMap={setMap}
-                      center={mapCenter} 
-                      zoom={4}
-                    >
-                      {markers
-                        ? markers.map((marker: any, index: number) => (
-                          <Marker
-                            key={index}
-                            map={map!}
-                            markerData={marker}
-                            position={{ lat: marker.lat, lng: marker.lng }}
-                            setActiveMarker={setActiveMarker}
-                          />
-                          ))
-                        : null
-                        }
-                      {activeMarker
-                        ? <InfoWindow 
-                          marker={activeMarker}
-                          />
-                        : <></>
-                      }
-                    </Map>
+                    
                   </div>
       }[locationPermissionStatus]
       }
+      <LocationSwitch />
+      <Search 
+        setMapCenter={setMapCenter}
+        setMapZoom={setMapZoom}
+        map={map!}
+      />
+      <Map
+        map={map!}
+        setMap={setMap}
+        center={mapCenter} 
+        zoom={4}
+      >
+        {markers
+          ? markers.map((marker: any, index: number) => (
+            <Marker
+              key={index}
+              map={map!}
+              markerData={marker}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              setActiveMarker={setActiveMarker}
+            />
+            ))
+          : null
+          }
+        {activeMarker
+          ? <InfoWindow 
+            marker={activeMarker}
+            />
+          : <></>
+        }
+      </Map>
     </Wrapper>
   )
 };
