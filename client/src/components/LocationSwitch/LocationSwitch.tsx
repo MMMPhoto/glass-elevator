@@ -5,35 +5,58 @@ import { useTimeout } from "@react-md/utils";
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
 
-const LocationSwitch = () => {
+const LocationSwitch = ({handleUserLocation, userLocation, setUserLocation, setShowMap}: {
+    handleUserLocation: ()=>Promise<any>,
+    userLocation: LatLng | undefined,
+    setUserLocation: Dispatch<SetStateAction<LatLng | undefined>>
+    setShowMap: Dispatch<SetStateAction<string>>
+  }) => {
+
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [fail, handleFailChange] = useChecked(false);
-  const [start] = useTimeout(() => {
-    setLoading(false);
-    if (fail) {
-      setChecked((prevChecked) => !prevChecked);
-    }
-  }, 5000);
+
+  useEffect(() => {
+    if (userLocation) setChecked(true);
+  }, [userLocation]);
+
+  const handleLocationQuery = async () => {
+    try {
+      if (!checked) {
+        setChecked(true);
+        setLoading(true);
+        const result = await handleUserLocation();
+        console.log(result);
+        // Give 1 sec to show loading animation
+          if (result) {
+            // console.log("result good")
+            setLoading(false);
+          } else {
+            // console.log("result bad")
+            setTimeout(() => {
+              setLoading(false);
+              setChecked(false);
+            }, 1000);
+          };
+      } else {
+        // console.log("unchecking");
+        setChecked(false);
+        setUserLocation(undefined);
+        setShowMap("none");
+      };
+    } catch(err: any) {
+      console.error(`Error: ${err.message}`);
+    };
+  };
 
   return (
-    <Form style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems:"center"}}>
-      {/* <Checkbox
-        id="async-switch-fail"
-        label={'Fail the "API" call'}
-        checked={fail}
-        onChange={handleFailChange}
-      /> */}
+    <Form style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems:"center"}}>
+      <p>Search</p>
       <AsyncSwitch
         id="async-switch"
         name="switch"
         label="Use My Location"
         loading={loading}
-        onChange={(event) => {
-          start();
-          setLoading(true);
-          setChecked(event.currentTarget.checked);
-        }}
+        onChange={() => handleLocationQuery()}
         checked={checked}
       />
     </Form>

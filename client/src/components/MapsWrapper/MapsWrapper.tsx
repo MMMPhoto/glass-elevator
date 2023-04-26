@@ -17,6 +17,7 @@ const markers: any | null = markerData;
 
 const MapsWrapper = () => {
   const [map, setMap] = useState<GoogleMap>();
+  const [showMap, setShowMap] = useState<string>("none");
 
   const [locationPermissionStatus, setLocationPermissionStatus] = useState<string>("prompt");
   const [userLocation, setUserLocation] = useState<LatLng | undefined>();
@@ -32,16 +33,23 @@ const MapsWrapper = () => {
     return <></>;
   };
 
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position: any) => {
-        const userLocation: LatLng = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        console.log(userLocation)
-        setUserLocation(userLocation);
-      });
+  const getUserLocation = (): Promise<any> => {
+    return new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej));
+  };
+
+  const handleUserLocation = async () => {
+    try {
+      const position = await getUserLocation();
+      console.log(position);
+      const userLatLng = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+      setUserLocation(userLatLng);
+      setMapCenter(userLatLng);
+      return position;
+    } catch(err) {
+      console.error(err);
     };
   };
 
@@ -49,10 +57,10 @@ const MapsWrapper = () => {
     if (navigator.permissions && navigator.permissions.query) {
       navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
         setLocationPermissionStatus(permissionStatus.state);
-        console.log(permissionStatus.state);
+        console.log(`Location permission is ${permissionStatus.state}`);
         permissionStatus.onchange = () => {
           setLocationPermissionStatus(permissionStatus.state);
-          getUserLocation();
+          handleUserLocation();
         };
       });
     };
@@ -60,60 +68,72 @@ const MapsWrapper = () => {
 
   useEffect(() => {
     handlePermission();
-    getUserLocation();
+    handleUserLocation();
   }, []);
 
   return (
     <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
-      {{ // Switch statment based on browser's location permission status
-        "prompt": 
-          <Splash />,
-        "granted": 
-          <Nearby 
-            map={map!}
-            setMap={setMap}
-            userLocation={userLocation}
-            markers={markers}
-            activeMarker={setActiveMarker}
-            setActiveMarker={setActiveMarker}
-          />,
-        "denied": <div>
-                    <p>We can't find your location. Search by a location:</p>
-                    
-                  </div>
-      }[locationPermissionStatus]
+      {{"prompt": <Splash />,
+        "denied": <p>We can't get your location. You'll first need to <a href="https://docs.buddypunch.com/en/articles/919258-how-to-enable-location-services-for-chrome-safari-edge-and-android-ios-devices-gps-setting">change</a> your browser's settings and then try again.</p>,
+        "approved": null
+      }[locationPermissionStatus]}
+      {locationPermissionStatus !== "prompt"
+        ? <div>
+            <LocationSwitch 
+              handleUserLocation={handleUserLocation}
+              userLocation={userLocation}
+              setUserLocation={setUserLocation}
+              setShowMap={setShowMap}
+            />
+            {userLocation
+              ? <Nearby 
+                  map={map!}
+                  setMap={setMap}
+                  userLocation={userLocation}
+                  markers={markers}
+                  activeMarker={setActiveMarker}
+                  setActiveMarker={setActiveMarker}
+                  setShowMap={setShowMap}
+                />
+              : <div>
+                  <Search 
+                    setMapCenter={setMapCenter}
+                    setMapZoom={setMapZoom}
+                    map={map!}
+                    setShowMap={setShowMap}
+                  />
+                </div>
+            }
+            <div style={{ display: showMap }}>
+              <Map
+                map={map!}
+                setMap={setMap}
+                center={mapCenter} 
+                zoom={4}
+              >
+                {markers
+                  ? markers.map((marker: any, index: number) => (
+                    <Marker
+                      key={index}
+                      map={map!}
+                      markerData={marker}
+                      position={{ lat: marker.lat, lng: marker.lng }}
+                      setActiveMarker={setActiveMarker}
+                    />
+                    ))
+                  : null
+                  }
+                {activeMarker
+                  ? <InfoWindow 
+                    marker={activeMarker}
+                    />
+                  : <></>
+                }
+              </Map>
+            </div>
+          </div>
+        : null
       }
-      <LocationSwitch />
-      <Search 
-        setMapCenter={setMapCenter}
-        setMapZoom={setMapZoom}
-        map={map!}
-      />
-      <Map
-        map={map!}
-        setMap={setMap}
-        center={mapCenter} 
-        zoom={4}
-      >
-        {markers
-          ? markers.map((marker: any, index: number) => (
-            <Marker
-              key={index}
-              map={map!}
-              markerData={marker}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              setActiveMarker={setActiveMarker}
-            />
-            ))
-          : null
-          }
-        {activeMarker
-          ? <InfoWindow 
-            marker={activeMarker}
-            />
-          : <></>
-        }
-      </Map>
     </Wrapper>
   )
 };

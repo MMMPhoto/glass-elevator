@@ -7,10 +7,11 @@ import "./Search.css";
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
 
-  const Search = ({ map, setMapCenter, setMapZoom }: {
+  const Search = ({ map, setMapCenter, setMapZoom, setShowMap }: {
     map: GoogleMap
     setMapCenter: Dispatch<SetStateAction<Position>>
     setMapZoom: Dispatch<SetStateAction<number>>
+    setShowMap: Dispatch<SetStateAction<string>>
   }) => {
   const [searchBox, setSearchBox] = useState<any>();
   const [chosenPlace, setChosenPlace] = useState<any>("");
@@ -55,6 +56,7 @@ type GoogleMap = google.maps.Map;
     const bounds = radius.getBounds()!
     setMapCenter(location);
     map.fitBounds(bounds);
+    setShowMap("flex");
   });
 
   return (
