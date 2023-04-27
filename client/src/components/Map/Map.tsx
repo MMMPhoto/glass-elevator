@@ -1,8 +1,5 @@
 import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
-import { JsxElement, isNoSubstitutionTemplateLiteral } from "typescript";
-
-type LatLng = google.maps.LatLngLiteral;
-type GoogleMap = google.maps.Map;
+import { LatLng, GoogleMap, Circle } from "../../types/types";
 
 interface MapInterface {
   children: JSX.Element,

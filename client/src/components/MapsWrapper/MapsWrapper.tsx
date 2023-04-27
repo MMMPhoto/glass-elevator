@@ -8,9 +8,10 @@ import Search from "../Search/Search";
 import Marker from "../Map/Marker";
 import InfoWindow from "../Map/InfoWindow";
 import markerData from "../../data/dummyData";
+import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-type LatLng = google.maps.LatLngLiteral;
-type GoogleMap = google.maps.Map;
+// type LatLng = google.maps.LatLngLiteral;
+// type GoogleMap = google.maps.Map;
 
 const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
 const markers: any | null = markerData;

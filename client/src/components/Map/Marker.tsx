@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
+import { LatLng, GoogleMap, Circle } from "../../types/types";
+
 
 const Marker = ({ map, markerData, position, setActiveMarker }: {
-    map: google.maps.Map, 
+    map: GoogleMap, 
     markerData: any, 
-    position: google.maps.LatLngLiteral,
+    position: LatLng,
     setActiveMarker: Dispatch<SetStateAction<string>>
   }) => {
   const [marker, setMarker] = useState<any>();

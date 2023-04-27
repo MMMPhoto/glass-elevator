@@ -1,11 +1,5 @@
 import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
-import Map from "../Map/Map";
-import Search from "../Search/Search";
-import Marker from "../Map/Marker";
-import InfoWindow from "../Map/InfoWindow";
-
-type LatLng = google.maps.LatLngLiteral;
-type GoogleMap = google.maps.Map;
+import { LatLng, GoogleMap, Circle } from "../../types/types";
 
 const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMarker, setMapVisibility} : {
   map: GoogleMap,

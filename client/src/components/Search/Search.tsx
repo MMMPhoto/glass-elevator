@@ -1,15 +1,12 @@
 import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { TextField, Button, Form } from "react-md";
+import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-import { Position } from "../../types/Position";
 import "./Search.css";
-
-type LatLng = google.maps.LatLngLiteral;
-type GoogleMap = google.maps.Map;
 
   const Search = ({ map, setMapCenter, setMapZoom, setMapVisibility }: {
     map: GoogleMap
-    setMapCenter: Dispatch<SetStateAction<Position>>
+    setMapCenter: Dispatch<SetStateAction<LatLng>>
     setMapZoom: Dispatch<SetStateAction<number>>
     setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>
   }) => {
@@ -45,7 +42,7 @@ type GoogleMap = google.maps.Map;
   const submitSearch = (() => {
     const location = { lat: chosenPlace.geometry.location.lat(), lng: chosenPlace.geometry.location.lng() };
     const meterRadius = searchRadius! * 1609.344; // convert miles to meters
-    const radius = new google.maps.Circle({
+    const radius = new Circle({
       strokeOpacity: 0,
       fillOpacity: 0.1,
       center: location,

@@ -1,9 +1,6 @@
 import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { Form, AsyncSwitch, Checkbox, useChecked } from "@react-md/form";
-import { useTimeout } from "@react-md/utils";
-
-type LatLng = google.maps.LatLngLiteral;
-type GoogleMap = google.maps.Map;
+import { LatLng, GoogleMap, Circle } from "../../types/types";
 
 const LocationSwitch = ({handleUserLocation, userLocation, setUserLocation, setMapVisibility, locationPermissionStatus}: {
     handleUserLocation: ()=>Promise<any>,
@@ -21,7 +18,6 @@ const LocationSwitch = ({handleUserLocation, userLocation, setUserLocation, setM
       setLoading(true);
       setChecked(true);
     }
-
   }, []);
 
   useEffect(() => {
