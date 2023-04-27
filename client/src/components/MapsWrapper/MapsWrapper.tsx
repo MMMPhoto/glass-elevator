@@ -17,7 +17,7 @@ const markers: any | null = markerData;
 
 const MapsWrapper = () => {
   const [map, setMap] = useState<GoogleMap>();
-  const [showMap, setShowMap] = useState<string>("none");
+  const [mapVisibility, setMapVisibility] = useState<React.CSSProperties>({visibility: "hidden"});
 
   const [locationPermissionStatus, setLocationPermissionStatus] = useState<string>("prompt");
   const [userLocation, setUserLocation] = useState<LatLng | undefined>();
@@ -47,6 +47,7 @@ const MapsWrapper = () => {
       }
       setUserLocation(userLatLng);
       setMapCenter(userLatLng);
+      setMapZoom(10);
       return position;
     } catch(err) {
       console.error(err);
@@ -83,7 +84,7 @@ const MapsWrapper = () => {
               handleUserLocation={handleUserLocation}
               userLocation={userLocation}
               setUserLocation={setUserLocation}
-              setShowMap={setShowMap}
+              setMapVisibility={setMapVisibility}
             />
             {userLocation
               ? <Nearby 
@@ -93,18 +94,18 @@ const MapsWrapper = () => {
                   markers={markers}
                   activeMarker={setActiveMarker}
                   setActiveMarker={setActiveMarker}
-                  setShowMap={setShowMap}
+                  setMapVisibility={setMapVisibility}
                 />
               : <div>
                   <Search 
                     setMapCenter={setMapCenter}
                     setMapZoom={setMapZoom}
                     map={map!}
-                    setShowMap={setShowMap}
+                    setMapVisibility={setMapVisibility}
                   />
                 </div>
             }
-            <div style={{ display: showMap }}>
+            <div style={mapVisibility}>
               <Map
                 map={map!}
                 setMap={setMap}

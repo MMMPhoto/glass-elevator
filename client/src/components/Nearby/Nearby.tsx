@@ -7,14 +7,14 @@ import InfoWindow from "../Map/InfoWindow";
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
 
-const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMarker, setShowMap} : {
+const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMarker, setMapVisibility} : {
   map: GoogleMap,
   setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
   userLocation: LatLng | undefined,
   markers: any,
   activeMarker: any,
   setActiveMarker: Dispatch<SetStateAction<string>>
-  setShowMap: Dispatch<SetStateAction<string>>
+  setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>
 }) => {
    
   const [closestMatch, setClosestMatch] = useState<any>(null);
@@ -33,8 +33,7 @@ const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMark
         };
       });
       setNotCheckedMatches(false);
-      map.setZoom(10);
-      setShowMap("flex");
+      setMapVisibility({visibility: "visible"});
     };
   }, [userLocation, markers]);
 

@@ -7,11 +7,11 @@ import "./Search.css";
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
 
-  const Search = ({ map, setMapCenter, setMapZoom, setShowMap }: {
+  const Search = ({ map, setMapCenter, setMapZoom, setMapVisibility }: {
     map: GoogleMap
     setMapCenter: Dispatch<SetStateAction<Position>>
     setMapZoom: Dispatch<SetStateAction<number>>
-    setShowMap: Dispatch<SetStateAction<string>>
+    setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>
   }) => {
   const [searchBox, setSearchBox] = useState<any>();
   const [chosenPlace, setChosenPlace] = useState<any>("");
@@ -43,7 +43,6 @@ type GoogleMap = google.maps.Map;
   });
 
   const submitSearch = (() => {
-    console.log("clicked!");
     const location = { lat: chosenPlace.geometry.location.lat(), lng: chosenPlace.geometry.location.lng() };
     const meterRadius = searchRadius! * 1609.344; // convert miles to meters
     const radius = new google.maps.Circle({
@@ -55,8 +54,9 @@ type GoogleMap = google.maps.Map;
     });
     const bounds = radius.getBounds()!
     setMapCenter(location);
-    map.fitBounds(bounds);
-    setShowMap("flex");
+    map.fitBounds(bounds, 0);
+    // map.setZoom((map.getZoom()!) + 1); // Zoom in one level to eliminate too much padding
+    setMapVisibility({visibility: "visible"});
   });
 
   return (
