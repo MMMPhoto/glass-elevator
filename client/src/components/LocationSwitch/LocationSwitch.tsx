@@ -34,20 +34,16 @@ const LocationSwitch = (props: LocationSwitchProps) => {
         setChecked(true);
         setLoading(true);
         const result = await handleUserLocation();
-        console.log(result);
         // Give 1 sec to show loading animation
           if (result) {
-            // console.log("result good")
             setLoading(false);
           } else {
-            // console.log("result bad")
             setTimeout(() => {
               setLoading(false);
               setChecked(false);
             }, 1000);
           };
       } else {
-        // console.log("unchecking");
         setChecked(false);
         setUserLocation(undefined);
         setMapVisibility({visibility: "hidden"});

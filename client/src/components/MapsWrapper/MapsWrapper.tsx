@@ -40,7 +40,6 @@ const MapsWrapper = () => {
   const handleUserLocation = async () => {
     try {
       const position = await getUserLocation();
-      console.log(position);
       const userLatLng = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -122,6 +121,7 @@ const MapsWrapper = () => {
               >
                 <SearchCircle 
                     mapCenter={mapCenter}
+                    setMapZoom={setMapZoom}
                     searchCircle={searchCircle}
                     setSearchCircle={setSearchCircle}
                     searchRadius={searchRadius}

@@ -5,6 +5,7 @@ import { isEditable } from "@testing-library/user-event/dist/utils";
 interface SearchCircleProps {
   map?: GoogleMap,
   mapCenter: LatLng,
+  setMapZoom: Dispatch<SetStateAction<number>>,
   searchCircle: Circle | undefined,
   setSearchCircle: Dispatch<SetStateAction<Circle | undefined>>,
   searchRadius: number
@@ -12,7 +13,7 @@ interface SearchCircleProps {
 
 const SearchCircle = (props: SearchCircleProps) => {
   
-  const { map, mapCenter, searchCircle, setSearchCircle, searchRadius } = props;
+  const { map, mapCenter, setMapZoom, searchCircle, setSearchCircle, searchRadius } = props;
 
   useEffect(() => {
     if (map) {
@@ -25,11 +26,12 @@ const SearchCircle = (props: SearchCircleProps) => {
         map: map,
       }));
     };
-  }, [searchRadius]);
+  }, [searchRadius, mapCenter]);
 
   useEffect(() => {
     if (searchCircle) {
       map!.fitBounds(searchCircle!.getBounds()!);
+      setMapZoom(map!.getZoom()!);
     }
   }, [searchCircle]);
 
