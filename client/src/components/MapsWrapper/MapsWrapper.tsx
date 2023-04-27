@@ -9,6 +9,7 @@ import Marker from "../Map/Marker";
 import InfoWindow from "../Map/InfoWindow";
 import markerData from "../../data/dummyData";
 import { LatLng, GoogleMap, Circle } from "../../types/types";
+import SearchCircle from "../Map/Circle";
 
 const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
 const markers: any | null = markerData;
@@ -19,11 +20,12 @@ const MapsWrapper = () => {
 
   const [locationPermissionStatus, setLocationPermissionStatus] = useState<string>("prompt");
   const [userLocation, setUserLocation] = useState<LatLng | undefined>();
-  const [searchPlace, setSearchPlace] = useState<LatLng>({ lat: 0, lng: 0 });
 
   const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 30, lng: -90 });
   const [mapZoom, setMapZoom] = useState<number>(4);
   const [activeMarker, setActiveMarker] = useState<any>();
+  const [searchCircle, setSearchCircle] = useState<Circle | undefined>();
+  const [searchRadius, setSearchRadius] = useState<number>(0);
 
   const render = (status: Status): ReactElement => {
     if (status === Status.LOADING) return <h3>{status} ..</h3>;
@@ -45,7 +47,7 @@ const MapsWrapper = () => {
       }
       setUserLocation(userLatLng);
       setMapCenter(userLatLng);
-      setMapZoom(10);
+      setSearchRadius(40200);
       return position;
     } catch(err) {
       console.error(err);
@@ -104,6 +106,10 @@ const MapsWrapper = () => {
                     setMapZoom={setMapZoom}
                     map={map!}
                     setMapVisibility={setMapVisibility}
+                    searchCircle={searchCircle}
+                    setSearchCircle={setSearchCircle}
+                    searchRadius={searchRadius}
+                    setSearchRadius={setSearchRadius}
                   />
                 </div>
             }
@@ -114,6 +120,12 @@ const MapsWrapper = () => {
                 center={mapCenter} 
                 zoom={mapZoom}
               >
+                <SearchCircle 
+                    mapCenter={mapCenter}
+                    searchCircle={searchCircle}
+                    setSearchCircle={setSearchCircle}
+                    searchRadius={searchRadius}
+                />
                 {markers
                   ? markers.map((marker: any, index: number) => (
                     <Marker

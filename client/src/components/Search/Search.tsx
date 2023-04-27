@@ -9,15 +9,19 @@ interface SearchProps {
   setMapCenter: Dispatch<SetStateAction<LatLng>>,
   setMapZoom: Dispatch<SetStateAction<number>>,
   setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>,
+  searchCircle: Circle | undefined,
+  setSearchCircle: Dispatch<SetStateAction<Circle | undefined>>,
+  searchRadius: number
+  setSearchRadius: Dispatch<SetStateAction<number>>
 };
 
 const Search = (props: SearchProps) => {
 
-  const { map, setMapCenter, setMapZoom, setMapVisibility } = props;
-  
+  const { map, setMapCenter, setMapZoom, setMapVisibility, searchCircle, setSearchCircle, searchRadius, setSearchRadius } = props;
+
   const [searchBox, setSearchBox] = useState<any>();
   const [chosenPlace, setChosenPlace] = useState<any>("");
-  const [searchRadius, setSearchRadius] = useState<number>();
+  // const [searchRadius, setSearchRadius] = useState<number>();
   const ref = useRef(null);
 
   const options = {
@@ -47,17 +51,20 @@ const Search = (props: SearchProps) => {
   const submitSearch = (() => {
     const location = { lat: chosenPlace.geometry.location.lat(), lng: chosenPlace.geometry.location.lng() };
     const meterRadius = searchRadius! * 1609.344; // convert miles to meters
-    const radius = new google.maps.Circle({
+    searchCircle?.setMap(null);
+    setSearchCircle(new google.maps.Circle({
       strokeOpacity: 0,
       fillOpacity: 0.1,
       center: location,
       radius: meterRadius,
       map: map
-    });
-    const bounds = radius.getBounds()!;
+    }));
+    setSearchRadius(meterRadius);
+    // setSearchCircle(radius);
+    // const bounds = radius.getBounds()!;
     setMapCenter(location);
-    map.fitBounds(bounds, 0);
-    setMapZoom(map.getZoom()!);
+    // map.fitBounds(bounds, 0);
+    // setMapZoom(map.getZoom()!);
     setMapVisibility({visibility: "visible"});
   });
 

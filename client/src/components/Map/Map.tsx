@@ -6,7 +6,7 @@ interface MapProps {
   map: GoogleMap,
   setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
   center: LatLng, 
-  zoom: number
+  zoom: number,
 };
 
 const MapTest = (props: MapProps) => {
@@ -20,6 +20,24 @@ const MapTest = (props: MapProps) => {
       center: center, 
       zoom: zoom }))
   }, []);
+
+  // useEffect(() => {
+  //   if (map) {
+  //     setSearchCircle(new google.maps.Circle({
+  //       strokeOpacity: 0,
+  //       fillOpacity: 0.1,
+  //       center: center,
+  //       radius: searchRadius,
+  //       map: map,
+  //     }));
+  //   };
+  // }, [searchRadius]);
+
+  // useEffect(() => {
+  //   if (searchCircle) {
+  //     map.fitBounds(searchCircle!.getBounds()!);
+  //   }
+  // }, [searchCircle]);
 
   useEffect(() => {
     map?.setCenter(center);
