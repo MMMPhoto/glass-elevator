@@ -1,19 +1,17 @@
 import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
 import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-interface MapInterface {
-  children: JSX.Element,
-  center: LatLng,
+interface MapProps {
+  children: JSX.Element | JSX.Element[]
+  map: GoogleMap,
+  setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
+  center: LatLng, 
   zoom: number
 };
 
-const MapTest = ({ children, map, setMap, center, zoom }: {
-    children: JSX.Element | JSX.Element[]
-    map: GoogleMap,
-    setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
-    center: LatLng, 
-    zoom: number
-  }) => {
+const MapTest = (props: MapProps) => {
+
+  const { children, map, setMap, center, zoom } = props;
   
   const ref = useRef(null);
 

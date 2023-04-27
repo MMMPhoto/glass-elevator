@@ -2,13 +2,17 @@ import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "rea
 import { Form, AsyncSwitch, Checkbox, useChecked } from "@react-md/form";
 import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-const LocationSwitch = ({handleUserLocation, userLocation, setUserLocation, setMapVisibility, locationPermissionStatus}: {
-    handleUserLocation: ()=>Promise<any>,
-    userLocation: LatLng | undefined,
-    setUserLocation: Dispatch<SetStateAction<LatLng | undefined>>,
-    setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>,
-    locationPermissionStatus: string
-  }) => {
+interface LocationSwitchProps {
+  handleUserLocation: ()=>Promise<any>,
+  userLocation: LatLng | undefined,
+  setUserLocation: Dispatch<SetStateAction<LatLng | undefined>>,
+  setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>,
+  locationPermissionStatus: string
+};
+
+const LocationSwitch = (props: LocationSwitchProps) => {
+
+  const { handleUserLocation, userLocation, setUserLocation, setMapVisibility, locationPermissionStatus } = props;
 
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);

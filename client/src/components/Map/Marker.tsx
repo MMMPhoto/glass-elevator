@@ -1,13 +1,18 @@
 import { useState, useRef, useEffect, Children, isValidElement, cloneElement, Dispatch, SetStateAction } from "react";
 import { LatLng, GoogleMap, Circle } from "../../types/types";
 
+interface MarkerProps {
+  map: GoogleMap, 
+  markerData: any, 
+  position: LatLng,
+  setActiveMarker: Dispatch<SetStateAction<string>>
+};
 
-const Marker = ({ map, markerData, position, setActiveMarker }: {
-    map: GoogleMap, 
-    markerData: any, 
-    position: LatLng,
-    setActiveMarker: Dispatch<SetStateAction<string>>
-  }) => {
+
+const Marker = (props: MarkerProps) => {
+
+  const { map, markerData, position, setActiveMarker } = props;
+
   const [marker, setMarker] = useState<any>();
 
   useEffect(() => {

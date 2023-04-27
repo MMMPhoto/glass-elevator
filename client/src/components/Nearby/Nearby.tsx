@@ -1,15 +1,15 @@
 import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMarker, setMapVisibility} : {
-  map: GoogleMap,
-  setMap: Dispatch<SetStateAction<GoogleMap | undefined >>,
+interface NearbyProps {
   userLocation: LatLng | undefined,
   markers: any,
-  activeMarker: any,
-  setActiveMarker: Dispatch<SetStateAction<string>>
   setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>
-}) => {
+};
+
+const Nearby = (props: NearbyProps) => {
+
+  const { userLocation, markers, setMapVisibility } = props;
    
   const [closestMatch, setClosestMatch] = useState<any>(null);
   

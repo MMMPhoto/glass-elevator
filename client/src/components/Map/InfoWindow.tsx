@@ -1,6 +1,15 @@
 import { useState, useRef, useEffect } from "react";
+import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-const InfoWindow = ({ marker, map}: {marker: any, map?: google.maps.Map}) => {
+interface InfoWindowProps {
+  marker: any, 
+  map?: GoogleMap
+};
+
+const InfoWindow = (props: InfoWindowProps) => {
+  
+  const { marker, map } = props;
+
   const [infoWindow, setInfoWindow] = useState<any>();
 
   useEffect(() => {

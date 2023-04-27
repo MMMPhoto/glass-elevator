@@ -10,9 +10,6 @@ import InfoWindow from "../Map/InfoWindow";
 import markerData from "../../data/dummyData";
 import { LatLng, GoogleMap, Circle } from "../../types/types";
 
-// type LatLng = google.maps.LatLngLiteral;
-// type GoogleMap = google.maps.Map;
-
 const apiKey: string = process.env.REACT_APP_GOOGLE_MAPS_API_KEY ?? "";
 const markers: any | null = markerData;
 
@@ -97,12 +94,8 @@ const MapsWrapper = () => {
             />
             {userLocation
               ? <Nearby 
-                  map={map!}
-                  setMap={setMap}
                   userLocation={userLocation}
                   markers={markers}
-                  activeMarker={setActiveMarker}
-                  setActiveMarker={setActiveMarker}
                   setMapVisibility={setMapVisibility}
                 />
               : <div>

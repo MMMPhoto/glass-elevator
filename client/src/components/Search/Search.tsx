@@ -4,12 +4,17 @@ import { LatLng, GoogleMap, Circle } from "../../types/types";
 
 import "./Search.css";
 
-  const Search = ({ map, setMapCenter, setMapZoom, setMapVisibility }: {
-    map: GoogleMap
-    setMapCenter: Dispatch<SetStateAction<LatLng>>
-    setMapZoom: Dispatch<SetStateAction<number>>
-    setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>
-  }) => {
+interface SearchProps {
+  map: GoogleMap,
+  setMapCenter: Dispatch<SetStateAction<LatLng>>,
+  setMapZoom: Dispatch<SetStateAction<number>>,
+  setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>,
+};
+
+const Search = (props: SearchProps) => {
+
+  const { map, setMapCenter, setMapZoom, setMapVisibility } = props;
+  
   const [searchBox, setSearchBox] = useState<any>();
   const [chosenPlace, setChosenPlace] = useState<any>("");
   const [searchRadius, setSearchRadius] = useState<number>();
@@ -42,7 +47,7 @@ import "./Search.css";
   const submitSearch = (() => {
     const location = { lat: chosenPlace.geometry.location.lat(), lng: chosenPlace.geometry.location.lng() };
     const meterRadius = searchRadius! * 1609.344; // convert miles to meters
-    const radius = new Circle({
+    const radius = new google.maps.Circle({
       strokeOpacity: 0,
       fillOpacity: 0.1,
       center: location,
