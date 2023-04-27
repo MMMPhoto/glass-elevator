@@ -52,10 +52,10 @@ type GoogleMap = google.maps.Map;
       radius: meterRadius,
       map: map
     });
-    const bounds = radius.getBounds()!
+    const bounds = radius.getBounds()!;
     setMapCenter(location);
     map.fitBounds(bounds, 0);
-    // map.setZoom((map.getZoom()!) + 1); // Zoom in one level to eliminate too much padding
+    setMapZoom(map.getZoom()!);
     setMapVisibility({visibility: "visible"});
   });
 

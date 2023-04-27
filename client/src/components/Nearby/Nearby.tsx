@@ -18,7 +18,6 @@ const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMark
 }) => {
    
   const [closestMatch, setClosestMatch] = useState<any>(null);
-  const [notCheckedMatches, setNotCheckedMatches] = useState<boolean>(true);
   
   useEffect(() => {
     if (userLocation && markers) {
@@ -32,7 +31,6 @@ const Nearby = ({map, setMap, userLocation, markers, activeMarker, setActiveMark
           setClosestMatch(marker);
         };
       });
-      setNotCheckedMatches(false);
       setMapVisibility({visibility: "visible"});
     };
   }, [userLocation, markers]);

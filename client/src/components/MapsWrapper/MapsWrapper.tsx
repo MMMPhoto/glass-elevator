@@ -71,6 +71,13 @@ const MapsWrapper = () => {
     handlePermission();
     handleUserLocation();
   }, []);
+  
+  useEffect(() => {
+    if (map) {
+      map.setCenter(mapCenter);
+      map.setZoom(mapZoom);      
+    }
+  }, [mapCenter, mapZoom])
 
   return (
     <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
@@ -111,7 +118,7 @@ const MapsWrapper = () => {
                 map={map!}
                 setMap={setMap}
                 center={mapCenter} 
-                zoom={4}
+                zoom={mapZoom}
               >
                 {markers
                   ? markers.map((marker: any, index: number) => (
