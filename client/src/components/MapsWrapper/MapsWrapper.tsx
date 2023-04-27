@@ -76,7 +76,7 @@ const MapsWrapper = () => {
     <Wrapper apiKey={apiKey} render={render} libraries={['places']}>
       {{"prompt": <Splash />,
         "denied": <p>We can't get your location. You'll first need to <a href="https://docs.buddypunch.com/en/articles/919258-how-to-enable-location-services-for-chrome-safari-edge-and-android-ios-devices-gps-setting">change</a> your browser's settings and then try again.</p>,
-        "approved": null
+        "granted": null
       }[locationPermissionStatus]}
       {locationPermissionStatus !== "prompt"
         ? <div>
@@ -85,6 +85,7 @@ const MapsWrapper = () => {
               userLocation={userLocation}
               setUserLocation={setUserLocation}
               setMapVisibility={setMapVisibility}
+              locationPermissionStatus={locationPermissionStatus}
             />
             {userLocation
               ? <Nearby 

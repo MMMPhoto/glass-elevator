@@ -5,18 +5,27 @@ import { useTimeout } from "@react-md/utils";
 type LatLng = google.maps.LatLngLiteral;
 type GoogleMap = google.maps.Map;
 
-const LocationSwitch = ({handleUserLocation, userLocation, setUserLocation, setMapVisibility}: {
+const LocationSwitch = ({handleUserLocation, userLocation, setUserLocation, setMapVisibility, locationPermissionStatus}: {
     handleUserLocation: ()=>Promise<any>,
     userLocation: LatLng | undefined,
-    setUserLocation: Dispatch<SetStateAction<LatLng | undefined>>
-    setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>
+    setUserLocation: Dispatch<SetStateAction<LatLng | undefined>>,
+    setMapVisibility: Dispatch<SetStateAction<React.CSSProperties>>,
+    locationPermissionStatus: string
   }) => {
 
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    if (userLocation) setChecked(true);
+    if (locationPermissionStatus === "granted") {
+      setLoading(true);
+      setChecked(true);
+    }
+
+  }, []);
+
+  useEffect(() => {
+    if (userLocation) setLoading(false);
   }, [userLocation]);
 
   const handleLocationQuery = async () => {
